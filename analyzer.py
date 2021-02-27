@@ -107,12 +107,12 @@ def main():
     DAYS_TO_SEARCH = create_days(TIMEFRAME, [])
 
     counter = OrderedDict()
+    
+    errors = OrderedDict()
+    errors['incorrect_JSON'] = 0
+    errors['file_not_found'] = 0
 
     counter['total_tweets'] = OrderedDict()
-
-    counter['errors'] = {}
-    counter['errors']['incorrect_JSON'] = 0
-    counter['errors']['file_not_found'] = 0
 
     progress = 0
     total_files = len(DAYS_TO_SEARCH) * len(WORDS) * len(HOURS)
@@ -144,13 +144,16 @@ def main():
                                 if word in tweet_json["text"]:
                                     counter[word][date] += 1
                             except json.decoder.JSONDecodeError:
-                                counter['errors']['incorrect_JSON'] += 1
+                                errors['incorrect_JSON'] += 1
                 except FileNotFoundError:
-                    counter['errors']['file_not_found'] += 1
+                    errors['file_not_found'] += 1
 
     output_filename = 'output_' + time.strftime("%Y-%m-%d_%H:%M:%S") + '.txt'
     with open(output_filename, 'w') as output:
-        output.write(json.dumps(counter, indent=4) + '\n')
+        output.write(json.dumps(counter, indent=4))
+
+    print('The following errors occurred while running the program:')
+    print(json.dumps(errors, indent=4))
 
     print(
         '\nThis all took {0:.2f} minutes...\n'
