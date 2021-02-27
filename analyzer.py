@@ -88,15 +88,16 @@ def create_days(TIMEFRAME, days_to_search):
 def main():
 
     start_time = time.time()
-    
-    #Edit words and timeframe here! (Adding or deleting words is very much possible :)
+
+    # Edit words and timeframe here!
+    # (Adding or deleting words is very much possible :)
     WORDS = [
         'woord1',
         'woord2',
         'woord3'
         ]
 
-    TIMEFRAME = ['20200215', '20200415']
+    TIMEFRAME = ['20200215', '20211203']
 
     HOURS = [str(day).zfill(2) for day in range(24)]
 
@@ -107,7 +108,7 @@ def main():
     DAYS_TO_SEARCH = create_days(TIMEFRAME, [])
 
     counter = OrderedDict()
-    
+
     errors = OrderedDict()
     errors['incorrect_JSON'] = 0
     errors['file_not_found'] = 0
@@ -120,14 +121,15 @@ def main():
     for word in WORDS:
         counter[word] = OrderedDict()
         for date in DAYS_TO_SEARCH:
-            counter[word][date] = 0
-            counter['total_tweets'][date] = 0
+            formatted_date = (date[:4] + '/' + date[4:6] + '/' + date[6:])
+            counter[word][formatted_date] = 0
+            counter['total_tweets'][formatted_date] = 0
             for hour in HOURS:
                 progress += 1
                 progress_bar(
                     progress,
                     total_files,
-                    status=word + ', ' + date + ':' + hour
+                    status=word + ', ' + formatted_date + ':' + hour
                     )
                 filename = (
                     '/net/corpora/twitter2/Tweets/' +
@@ -138,11 +140,11 @@ def main():
                     with gzip.open(filename, 'rt', encoding='utf8') as inp:
                         for tweet in inp.readlines():
                             if word == WORDS[-1]:
-                                counter['total_tweets'][date] += 1
+                                counter['total_tweets'][formatted_date] += 1
                             try:
                                 tweet_json = json.loads(tweet)
                                 if word in tweet_json["text"]:
-                                    counter[word][date] += 1
+                                    counter[word][formatted_date] += 1
                             except json.decoder.JSONDecodeError:
                                 errors['incorrect_JSON'] += 1
                 except FileNotFoundError:
