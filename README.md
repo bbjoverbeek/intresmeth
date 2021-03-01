@@ -9,5 +9,14 @@ scp /home/user/Documents/informatiekunde/intresmeth/final_project/program/analyz
 
 And ofcourse adjust the file paths and the student number to your needs.
 
+You can then log into karora, run the program, and wait (a long time).
 
-You can then log into karora, run the program, and wait!
+
+If you want to download the output files from karora, use the scp command the other way around:
+
+(do not forget to use escape characters for the ':' in the time!)
+
+scp s1234567@karora.let.rug.nl:~/path_to_output/output.txt /home/user/Documents/informatiekunde/intresmeth/final_project/program/
+
+You can then use the jupyter notebook to see the basics of your output. 
+(don't forget to change te filepath to your file!)
