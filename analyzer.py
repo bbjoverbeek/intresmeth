@@ -92,12 +92,14 @@ def main():
     # Edit words and timeframe here!
     # (Adding or deleting words is very much possible :)
     WORDS = [
-        'woord1',
-        'woord2',
-        'woord3'
+        'wc-papier',
+        'wc papier',
+        'wcpapier',
+        'toiletpapier',
+        'toilet papier'
         ]
 
-    TIMEFRAME = ['20200215', '20211203']
+    TIMEFRAME = ['20200210', '20200412']
 
     HOURS = [str(day).zfill(2) for day in range(24)]
 
